@@ -17,6 +17,8 @@ struct Contact_node{
     Contact_node *next;
 };
 
+Contact_node **Csave;
+Phone_node **Psave;
 string col[]={"\033[0m","\033[31m","\033[33m","\033[32m","\033[34m"};
 
 void menu();//print menu and switch functions
@@ -26,18 +28,20 @@ Contact_node *Read_contacts_name(Contact_node *first);
 Contact_node *Add_first_node_contact(Contact_node *first , string Id, string FirstName, string LastName);
 
 Contact_node *Add_first_node_phone(Contact_node *first , string Id, string PhoneNumber);
+
 void Print_list(Contact_node *first);
 
 int main(){
-
-    
     
     // cout<<"------------------------\n";
     Contact_node *first =NULL;
-    first = Read_contacts_name(first);
-    Print_list(first);
+    Csave = &first;
+    
+    // first = Read_contacts_name(first);
+    // Print_list(first);
     return 0;
 };
+
 Contact_node *Add_first_node_contact(Contact_node *first , string Id, string FirstName, string LastName){
 
     Contact_node *New_node =new Contact_node;
@@ -66,21 +70,25 @@ void menu(){
     while (true)
     {    
         cout<<"\tMenu\n";
+        cout<<"0) exit\n";
         cout<<"1) add contact\n";
-        cout<<"1) showe all contacts\n";
-        cout<<"1) edite contact\n";
-        cout<<"1) delete contact\n";
-        cout<<"1) add phone number to contact\n";
-        cout<<"1) delte phone number from contact\n";
-        cout<<"1) delete duplicate phone number contact\n";
-        cout<<"1) advanced search\n";
-        cout<<"1) sorted\n";
+        cout<<"2) showe all contacts\n";
+        cout<<"3) edite contact\n";
+        cout<<"4) delete contact\n";
+        cout<<"5) add phone number to contact\n";
+        cout<<"6) delte phone number from contact\n";
+        cout<<"7) delete duplicate phone number contact\n";
+        cout<<"8) advanced search\n";
+        cout<<"9) sorted\n";
 
         cout<<"-Enter menu code:";
         cin>>menu;
 
         switch (menu)
         {
+        case '0':
+            
+            break;    
         case '1':
             
             break;
