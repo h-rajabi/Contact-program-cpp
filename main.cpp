@@ -17,15 +17,21 @@ struct Contact_node{
     Contact_node *next;
 };
 
-Contact_node **Csave;
-Phone_node **Psave;
-string col[]={"\033[0m","\033[31m","\033[33m","\033[32m","\033[34m"};
+// Contact_node **Csave;
+// Phone_node **Psave;
+// string col[]={"\033[0m","\033[31m","\033[33m","\033[32m","\033[34m"};
+
+bool isDigit(string a);
+
+bool Check_phone(string phone);
 
 void menu();//print menu and switch functions
 
+void Add_contact();
+
 Contact_node *Read_contacts_name(Contact_node *first);
 
-Contact_node *Add_first_node_contact(Contact_node *first , string Id, string FirstName, string LastName);
+Contact_node *Add_first_node_contact(Contact_node *Cfirst, string Id, string FirstName, string LastName,Phone_node *Pfirst = NULL);
 
 Contact_node *Add_first_node_phone(Contact_node *first , string Id, string PhoneNumber);
 
@@ -35,21 +41,67 @@ int main(){
     
     // cout<<"------------------------\n";
     Contact_node *first =NULL;
-    Csave = &first;
-    
+    // Csave = &first;
+
     // first = Read_contacts_name(first);
     // Print_list(first);
+    string x;
+    do
+    {
+        cout<<"enter :";
+        cin>>x;
+    } while (!Check_phone(x));
+    
+    
+    
+    
     return 0;
-};
+}
 
-Contact_node *Add_first_node_contact(Contact_node *first , string Id, string FirstName, string LastName){
+bool Check_phone(string phone){
+    bool check;
+    int phonelength = phone.length();
+    if (phone[0] != '+'){ 
+        if  ( phonelength != 11){
+            cout<<"error! :phone number must 11 length \n";
+            return false;
+        } 
+        if (isDigit(phone))
+            if (phone[0] == '0' && phone[1] == '9')
+                return true;
+            else {
+                cout<<"error! :woring phone number\n"; 
+                return false;
+            }
+        else{
+            cout <<"error! : your phone number must be 0-9\n";
+            return false;
+        }
+    }else{
+        
+        string text =phone.substr(1,phonelength);
+        if( !(11 < phonelength && phonelength < 15) ){
+            cout <<"error! : woring number \n";
+            return false;
+        }
+        else if (isDigit(text)){
+            return true;
+        }else{
+            cout<<"error! : your phone number must be 0-9\n";
+            return false;
+        } 
+    }       
+}
+
+Contact_node *Add_first_node_contact(Contact_node *Cfirst , string Id, string FirstName, string LastName, Phone_node *Pfirst ){
 
     Contact_node *New_node =new Contact_node;
     
     New_node ->id =Id;
     New_node ->fname=FirstName;
     New_node ->lname =LastName;
-    New_node ->next = first;
+    New_node ->next = Cfirst;
+    New_node ->pnode =Pfirst;
 	
     return New_node;
 }
@@ -150,6 +202,19 @@ void Print_list(Contact_node *first){
     }
 }//print linked list
 
+bool isDigit(string x){   
+    //check to be digit sentence
+    x = x + '.';
+    int i=0;
+    do
+    {
+        if(!isdigit(x[i]))
+            return false;
+
+        i++;
+    }while(x[i] != '.');
+    return true;
+}
 
 
 
