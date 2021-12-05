@@ -35,27 +35,79 @@ Contact_node *Add_first_node_contact(Contact_node *Cfirst, string Id, string Fir
 
 Contact_node *Add_first_node_phone(Contact_node *first , string Id, string PhoneNumber);
 
-void Print_list(Contact_node *first);
+void Print_list_contacts(Contact_node *Cfirst, Phone_node *Pfirst=NULL);
+
+void Read_phone(Phone_node *first);
+
+Contact_node *Search_id(Contact_node *first, string Get_id);
+
+// ? functions 
+// ? -----------------------------------------------------------------------------
 
 int main(){
     
     // cout<<"------------------------\n";
-    Contact_node *first =NULL;
+    Contact_node *CFirst =NULL;
     // Csave = &first;
 
-    // first = Read_contacts_name(first);
-    // Print_list(first);
-    string x;
-    do
-    {
-        cout<<"enter :";
-        cin>>x;
-    } while (!Check_phone(x));
+    CFirst = Read_contacts_name(CFirst);
+
+    Contact_node *search =Search_id(CFirst,"5");
     
+    if(search == CFirst) cout<<"not find\n";
+    else
+        cout<< search ->id <<"\t"<<search ->fname <<"\t"<< search->lname <<"\t"<< search->pnode <<"\t"<< search->next<<endl;
     
-    
-    
+    Print_list_contacts(CFirst);
     return 0;
+}
+
+// ? functions 
+// ? -----------------------------------------------------------------------------
+
+// TODO : read phone from fille 
+// ? OK
+void Read_phone(Phone_node *first){
+    
+    int count=0;
+    ifstream Phonefille("Contact_name.txt");
+    if(!Phonefille) {cout<<"error! :can not open file partner\n"; return ;}
+    while (Phonefille)
+        count++;
+    
+    string *Id = new string[count];
+    string *Phone = new string[count];
+
+    count=0;
+    while (Phonefille>>Id[count]>>Phone[count]) {
+        count++;
+    }//get info from partner fille
+    
+    Phonefille.close();
+}
+
+// TODO : search id in linked list contact and mearge linked list phone 
+// ? OK 
+Contact_node *Search_id(Contact_node *first, string Get_id){
+
+    Contact_node *Current = first;
+    
+    if (!first) return first;
+
+    while (Current){
+        if (Current ->id == Get_id)
+            return Current;
+        else Current = Current ->next;
+    }
+    return first;// dont find
+
+}
+
+// TODO : add contact
+void Add_contact(){
+
+
+
 }
 
 bool Check_phone(string phone){
@@ -191,16 +243,16 @@ Contact_node *Read_contacts_name(Contact_node *first){
     return first;
 }
 
-void Print_list(Contact_node *first){
+void Print_list_contacts(Contact_node *Cfirst, Phone_node *Pfirst){
     int Count=0;
-    cout<<"Id\t First Name\t Last Name\n";
-    while (first)
+    // cout<<"Id\t First Name\t Last Name\n";
+    while (Cfirst)
     {
         Count++;
-        cout<<first ->id<<" )\t"<<first->fname<<"\t "<<first->lname<<endl;
-        first = first->next;
+        cout<<Cfirst<<"\t"<<Cfirst ->id<<" )\t"<<Cfirst->fname<<"\t "<<Cfirst->lname<<endl;
+        Cfirst = Cfirst->next;
     }
-}//print linked list
+}//print linked list contacts
 
 bool isDigit(string x){   
     //check to be digit sentence
