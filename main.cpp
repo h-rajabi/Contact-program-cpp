@@ -43,6 +43,8 @@ Contact_node *Search_by_id(Contact_node *first, string Get_id);
 
 void Print_list_phone(Contact_node *Cfirst);
 
+Phone_node *merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -61,8 +63,19 @@ int main(){
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
-// TODO : print list phone with addres contact
+// TODO : merge phone list to cintact list
 
+Phone_node *merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
+
+    Contact_node *Current = Cfirst;
+    Current = Search_by_id(Cfirst, Id);
+    Current ->pnode = Add_first_node_phone(Current ->pnode, Id, PhoneNumber);
+    return Current->pnode;
+
+}
+
+
+// TODO : change gui print number
 void Print_list_phone(Contact_node *Cfirst){
     Phone_node *Pfirst=Cfirst ->pnode;
     // cout<<"Id\t First Name\t Last Name\n";
@@ -96,7 +109,8 @@ void Read_phone(Contact_node *Cfirst){
     }//get info from partner fille
     
     for (int i = 0; i < count; i++)
-    {
+    {   
+        // merge_phone_contact()
         Current=Search_by_id(Cfirst,Id[i]);
         Phone_node *Pfirst =NULL;
         for (int j = i; j < count; j++)
