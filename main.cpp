@@ -27,13 +27,17 @@ bool Check_phone(string phone);
 
 void menu();//print menu and switch functions
 
-void Add_contact();
+void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count);
 
 Contact_node *Read_contacts_name(Contact_node *first);
 
 Contact_node *Add_first_node_contact(Contact_node *Cfirst, string Id, string FirstName, string LastName,Phone_node *Pfirst = NULL);
 
 Phone_node *Add_first_node_phone(Phone_node *first , string Id, string PhoneNumber);
+
+Contact_node *Add_last_node_contact(Contact_node *Cfirst , string getId, string getFirstName, string getLastName, Phone_node *getPfirst=NULL );
+
+Phone_node *Add_last_node_phone(Phone_node *Pfirst , string getId, string getPhoneNumber);
 
 void Print_list_contacts(Contact_node *Cfirst);
 
@@ -56,8 +60,8 @@ int main(){
     
     // cout<<"------------------------\n";
     Contact_node *CFirst =NULL;
-    Write_contact_fille("4","amir","karami");
-    Write_phone_fille("4","91682512354");
+    // Write_contact_fille("4","amir","karami");
+    // Write_phone_fille("4","91682512354");
 
     CFirst = Read_contacts_name(CFirst);
     Read_phone(CFirst);
@@ -93,8 +97,31 @@ void Write_phone_fille(string Id, string Phone){
 }
 
 // TODO : add contact
-void Add_contact(){
+void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count){
 
+    string Fname,Lname,phone,Phonelist[20];
+    int count2 =0;
+    bool loop = true;
+    while (loop)
+    {
+        cout<<"-Enter First Name:";
+        cin>>Fname;
+        cout<<"-Enter Last Name:";
+        cin>>Lname;
+        
+        for (int i = 0; i < 20; i++)
+        {
+            cout<<"-Enter Phone Number(0 : break) :";
+            cin>>phone;
+            if(!Check_phone(phone)) {
+
+                
+            }
+        }
+        
+        
+    }
+    
 
 }
 
@@ -233,6 +260,50 @@ Phone_node *Add_first_node_phone(Phone_node *first , string Id, string PhoneNumb
     return New_node;
 }
 
+Contact_node *Add_last_node_contact(Contact_node *Cfirst , string getId, string getFirstName, string getLastName, Phone_node *getPfirst ){
+
+    Contact_node *New_node =new Contact_node;
+    
+    New_node ->id = getId;
+    New_node ->fname = getFirstName;
+    New_node ->lname = getLastName;
+    New_node ->pnode = getPfirst;
+    New_node ->next = NULL;    
+
+    if (!Cfirst)
+        return New_node;
+    
+    Contact_node *Last = Cfirst;
+    while (Last->next != NULL)
+    {
+        Last = Last->next;
+    }
+    Last->next = New_node;
+    
+    return Cfirst;
+}
+
+Phone_node *Add_last_node_phone(Phone_node *Pfirst , string getId, string getPhoneNumber){
+
+    Phone_node *New_node =new Phone_node;
+    
+    
+    New_node ->id = getId;
+    New_node ->number = getPhoneNumber;
+    New_node ->next = NULL;    
+    if (!Pfirst)
+        return New_node;
+    
+    Phone_node *Last = Pfirst;
+    while (Last->next != NULL)
+    {
+        Last = Last->next;
+    }
+    Last->next = New_node;
+    
+    return Pfirst;
+}
+
 void menu(){
     char menu;
     while (true)
@@ -299,7 +370,7 @@ Contact_node *Read_contacts_name(Contact_node *first){
     if(!Contactfille) {cout<<"error! :can not open file partner\n"; return 0;}
 
     while (Contactfille>>Id>>FirstName>>LastName) {
-        first=Add_first_node_contact(first,Id,FirstName,LastName);
+        first=Add_last_node_contact(first,Id,FirstName,LastName);
         count++;
     }//get info from partner fille
     
