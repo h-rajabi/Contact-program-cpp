@@ -43,7 +43,7 @@ Contact_node *Search_by_id(Contact_node *first, string Get_id);
 
 void Print_list_phone(Contact_node *Cfirst);
 
-Phone_node *merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber);
+void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -65,13 +65,12 @@ int main(){
 
 // TODO : merge phone list to cintact list
 
-Phone_node *merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
+void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
 
     Contact_node *Current = Cfirst;
     Current = Search_by_id(Cfirst, Id);
     Current ->pnode = Add_first_node_phone(Current ->pnode, Id, PhoneNumber);
-    return Current->pnode;
-
+    
 }
 
 
@@ -89,24 +88,28 @@ void Print_list_phone(Contact_node *Cfirst){
 
 // TODO : read phone from fille 
 void Read_phone(Contact_node *Cfirst){
-    string h;
-    int count=0;
-    ifstream f("Contact_phone.txt");
-    if(!f) {cout<<"error! :can not open file partner\n"; return ;}
     
-    while (getline(f,h)) count++;//get number phone in fille
-    f.close();
+    ifstream f("Contact_phone.txt");
+    if(!f) {cout<<"error! :can not open file phone contact\n"; return ;}
     
     Contact_node *Current = Cfirst;
-    string *Id= new string[count];
-    string *Phone = new string[count];
+    string *Id= new string;
+    string *Phone = new string;
 
     ifstream Phonefille("Contact_phone.txt");
-    count=0;
+    
     // ? error in using heap  
-    while (Phonefille>>Id[count]>>Phone[count]) {
-        count ++;   
+    while (Phonefille>> *Id>> *Phone) {
+        merge_phone_contact(Cfirst, *Id, *Phone); 
     }//get info from partner fille
+    
+    Phonefille.close();
+    delete Id,Phone;
+
+    /*for (int i = 0; i < count; i++)
+    {
+        merge_phone_contact(Cfirst, Id[i], Phone[i]);
+    }
     
     for (int i = 0; i < count; i++)
     {   
@@ -121,13 +124,12 @@ void Read_phone(Contact_node *Cfirst){
                 Id[j] = "0";
             }
         }
-    }
+    }*/ 
+    //?  step 2 for merge phone to contact 
     
-    delete Id,Phone;
-    Phonefille.close();
 }
 
-// TODO : search id in linked list contact and mearge linked list phone 
+// TODO : search id in linked list contact 
 // ? OK 
 Contact_node *Search_by_id(Contact_node *first, string Get_id){
 
