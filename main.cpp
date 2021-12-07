@@ -45,6 +45,10 @@ void Print_list_phone(Contact_node *Cfirst);
 
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber);
 
+void Write_contact_fille(string Id, string Fname, string Lname);
+
+void Write_phone_fille(string Id, string Phone);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -52,7 +56,9 @@ int main(){
     
     // cout<<"------------------------\n";
     Contact_node *CFirst =NULL;
-   
+    Write_contact_fille("4","amir","karami");
+    Write_phone_fille("4","91682512354");
+
     CFirst = Read_contacts_name(CFirst);
     Read_phone(CFirst);
     Print_list_contacts(CFirst);
@@ -63,7 +69,34 @@ int main(){
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
-// TODO : merge phone list to cintact list
+
+void Write_contact_fille(string Id, string Fname, string Lname){
+
+    ofstream Contactsfille("Contact_name.txt",ios::app);
+    if(!Contactsfille) cout<<"error! :can not open fille contact\n";
+
+    Contactsfille<<Id<<"\t"<<Fname<<"\t"<<Lname<<"\n";//added to fille partner 
+    cout<<"your Contact addede to file\n";
+    Contactsfille.close();
+
+}
+
+void Write_phone_fille(string Id, string Phone){
+
+    ofstream Contactsfille("contact_phone.txt",ios::app);
+    if(!Contactsfille) cout<<"error! :can not open fille contact\n";
+
+    Contactsfille<<Id<<"\t"<<Phone<<"\n";//added to fille partner 
+    cout<<"your Phone addede to file\n";
+    Contactsfille.close();
+
+}
+
+// TODO : add contact
+void Add_contact(){
+
+
+}
 
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
 
@@ -73,8 +106,6 @@ void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
     
 }
 
-
-// TODO : change gui print number
 void Print_list_phone(Contact_node *Cfirst){
     Phone_node *Pfirst=Cfirst ->pnode;
     // cout<<"Id\t First Name\t Last Name\n";
@@ -86,7 +117,6 @@ void Print_list_phone(Contact_node *Cfirst){
     cout<<endl;
 }
 
-// TODO : read phone from fille 
 void Read_phone(Contact_node *Cfirst){
     
     ifstream f("Contact_phone.txt");
@@ -126,11 +156,9 @@ void Read_phone(Contact_node *Cfirst){
         }
     }*/ 
     //?  step 2 for merge phone to contact 
-    
-}
 
-// TODO : search id in linked list contact 
-// ? OK 
+}
+  
 Contact_node *Search_by_id(Contact_node *first, string Get_id){
 
     Contact_node *Current = first;
@@ -143,12 +171,6 @@ Contact_node *Search_by_id(Contact_node *first, string Get_id){
         else Current = Current ->next;
     }
     return first;// dont find
-
-}
-
-// TODO : add contact
-void Add_contact(){
-
 
 }
 
