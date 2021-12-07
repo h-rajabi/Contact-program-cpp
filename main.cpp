@@ -33,13 +33,15 @@ Contact_node *Read_contacts_name(Contact_node *first);
 
 Contact_node *Add_first_node_contact(Contact_node *Cfirst, string Id, string FirstName, string LastName,Phone_node *Pfirst = NULL);
 
-Contact_node *Add_first_node_phone(Contact_node *first , string Id, string PhoneNumber);
+Phone_node *Add_first_node_phone(Phone_node *first , string Id, string PhoneNumber);
 
-void Print_list_contacts(Contact_node *Cfirst, Phone_node *Pfirst=NULL);
+void Print_list_contacts(Contact_node *Cfirst);
 
-void Read_phone(Phone_node *first);
+void Read_phone(Contact_node *Cfirst);
 
-Contact_node *Search_id(Contact_node *first, string Get_id);
+Contact_node *Search_by_id(Contact_node *first, string Get_id);
+
+void Print_list_phone(Contact_node *Cfirst);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -48,47 +50,72 @@ int main(){
     
     // cout<<"------------------------\n";
     Contact_node *CFirst =NULL;
-    // Csave = &first;
-
+   
     CFirst = Read_contacts_name(CFirst);
-
-    Contact_node *search =Search_id(CFirst,"5");
-    
-    if(search == CFirst) cout<<"not find\n";
-    else
-        cout<< search ->id <<"\t"<<search ->fname <<"\t"<< search->lname <<"\t"<< search->pnode <<"\t"<< search->next<<endl;
-    
+    Read_phone(CFirst);
     Print_list_contacts(CFirst);
-    return 0;
+    
+    return 0;//TODO debug error
 }
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
+// TODO : print list phone with addres contact
+
+void Print_list_phone(Contact_node *Cfirst){
+    Phone_node *Pfirst=Cfirst ->pnode;
+    // cout<<"Id\t First Name\t Last Name\n";
+    while (Pfirst)
+    {
+        cout<<Pfirst->number<<"\t";
+        Pfirst = Pfirst->next;
+    }
+    cout<<endl;
+}
+
 // TODO : read phone from fille 
-// ? OK
-void Read_phone(Phone_node *first){
-    
+void Read_phone(Contact_node *Cfirst){
+    string h;
     int count=0;
-    ifstream Phonefille("Contact_name.txt");
-    if(!Phonefille) {cout<<"error! :can not open file partner\n"; return ;}
-    while (Phonefille)
-        count++;
+    ifstream f("Contact_phone.txt");
+    if(!f) {cout<<"error! :can not open file partner\n"; return ;}
     
-    string *Id = new string[count];
+    while (getline(f,h)) count++;//get number phone in fille
+    f.close();
+    
+    Contact_node *Current = Cfirst;
+    string *Id= new string[count];
     string *Phone = new string[count];
 
+    ifstream Phonefille("Contact_phone.txt");
     count=0;
+    // ? error in using heap  
     while (Phonefille>>Id[count]>>Phone[count]) {
-        count++;
+        count ++;   
     }//get info from partner fille
     
+    for (int i = 0; i < count; i++)
+    {
+        Current=Search_by_id(Cfirst,Id[i]);
+        Phone_node *Pfirst =NULL;
+        for (int j = i; j < count; j++)
+        {
+            if(Id[i]==Id[j] && Id[i] !="0"){
+                Pfirst = Add_first_node_phone(Current ->pnode ,Id[i],Phone[j]);
+                Current ->pnode = Pfirst;
+                Id[j] = "0";
+            }
+        }
+    }
+    
+    delete Id,Phone;
     Phonefille.close();
 }
 
 // TODO : search id in linked list contact and mearge linked list phone 
 // ? OK 
-Contact_node *Search_id(Contact_node *first, string Get_id){
+Contact_node *Search_by_id(Contact_node *first, string Get_id){
 
     Contact_node *Current = first;
     
@@ -105,7 +132,6 @@ Contact_node *Search_id(Contact_node *first, string Get_id){
 
 // TODO : add contact
 void Add_contact(){
-
 
 
 }
@@ -243,13 +269,15 @@ Contact_node *Read_contacts_name(Contact_node *first){
     return first;
 }
 
-void Print_list_contacts(Contact_node *Cfirst, Phone_node *Pfirst){
+void Print_list_contacts(Contact_node *Cfirst){
     int Count=0;
     // cout<<"Id\t First Name\t Last Name\n";
     while (Cfirst)
     {
-        Count++;
         cout<<Cfirst<<"\t"<<Cfirst ->id<<" )\t"<<Cfirst->fname<<"\t "<<Cfirst->lname<<endl;
+        cout<<"numbers is :";
+        Print_list_phone(Cfirst);
+        cout<<endl;
         Cfirst = Cfirst->next;
     }
 }//print linked list contacts
