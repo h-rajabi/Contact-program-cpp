@@ -27,9 +27,9 @@ bool Check_phone(string phone);
 
 void menu();//print menu and switch functions
 
-void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count);
+Contact_node *Add_contact(Contact_node *Cfirst, int &count);
 
-Contact_node *Read_contacts_name(Contact_node *first);
+Contact_node *Read_contacts_name(Contact_node *first, int &count);
 
 Contact_node *Add_first_node_contact(Contact_node *Cfirst, string Id, string FirstName, string LastName,Phone_node *Pfirst = NULL);
 
@@ -58,13 +58,19 @@ void Write_phone_fille(string Id, string Phone);
 
 int main(){
     
-    // cout<<"------------------------\n";
+    
     Contact_node *CFirst =NULL;
+    Phone_node * PFirst = NULL;
+    int count = 0;
     // Write_contact_fille("4","amir","karami");
     // Write_phone_fille("4","91682512354");
 
-    CFirst = Read_contacts_name(CFirst);
+    CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
+    Print_list_contacts(CFirst);
+    cout<<"------------------------\n";
+    CFirst=Add_contact(CFirst , count);
+    cout<<"------------------------\n";
     Print_list_contacts(CFirst);
     
     return 0;//TODO debug error
@@ -84,7 +90,7 @@ void Write_contact_fille(string Id, string Fname, string Lname){
     Contactsfille.close();
 
 }
-
+// ? get phone list
 void Write_phone_fille(string Id, string Phone){
 
     ofstream Contactsfille("contact_phone.txt",ios::app);
@@ -97,19 +103,21 @@ void Write_phone_fille(string Id, string Phone){
 }
 
 // TODO : add contact
-void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count){
+Contact_node *Add_contact(Contact_node *Cfirst, int &count){
 
     string Fname,Lname,phone,Phonelist[20];
     int count2 =0;
     bool loop = true;
+    
     while (loop)
     {
         cout<<"-Enter First Name :";
         cin>>Fname;
         cout<<"-Enter Last Name :";
         cin>>Lname;
-        
+        count2 =0;
         while (true){
+            
             cout<<"-Enter Phone Number(0 : done):";
             cin>>phone;
             if(phone=="0") break;
@@ -129,19 +137,30 @@ void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count){
             cout<<"first name \t last name \n"<< Fname<<" \t "<<Lname<<"\n"<<"Phones :\n";
             for (int i = 0; i < count2; i++)
             {
-                cout<<i<<") "<<Phonelist[i]<<endl;
+                cout<<i+1<<") "<<Phonelist[i]<<endl;
             }
             cout<<"are you sure about contact details (y , n) :";
             cin>>sure;
             if(*sure == 'n') break;
             else if (*sure == 'y')
-            {
+            {   
+                count++;
                 loop = false;
                 break;
             }
             else cout<<"error! : enter (y : YES )or (n : NO) \n";
         }   
     }
+
+    Write_contact_fille(to_string(count),Fname,Lname);
+    Cfirst=Add_last_node_contact(Cfirst, to_string(count), Fname, Lname);
+
+    for (int i = 0; i < count2; i++)
+    {
+        Write_phone_fille(to_string(count),Phonelist[i]);
+        merge_phone_contact(Cfirst,to_string(count),Phonelist[i]);
+    }
+    return Cfirst;
 }
 
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
@@ -382,9 +401,8 @@ void menu(){
     }
 }
 
-Contact_node *Read_contacts_name(Contact_node *first){
+Contact_node *Read_contacts_name(Contact_node *first, int &count){
     string Id, FirstName, LastName;
-    int count=0;
     ifstream Contactfille("Contact_name.txt");
     if(!Contactfille) {cout<<"error! :can not open file partner\n"; return 0;}
 
