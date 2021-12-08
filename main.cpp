@@ -1,7 +1,7 @@
 #include <iostream>
 #include "string.h"
 #include <fstream>
-#include <string>
+// #include <string>
 
 using namespace std;
 
@@ -70,7 +70,23 @@ int main(){
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
+    
+// ? ---------------------------
 
+    Print_list_contacts(CFirst);
+    int count2=0 ;
+    Contact_node *search[10000]; 
+    *search=Advancedsearch(CFirst,"ssein",count2);
+    // ! error in returned arr of struct 
+    cout<<"----------------------------\n";
+    if(!search) cout << "NOT Found\n"; 
+    else 
+        for (int i = 0; i < 10; i++){
+            cout<<search[i]<<endl;
+            // cout<<i+1<<") "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
+            // Print_list_phone(search[i]);
+        }
+    
     /*
     Print_list_contacts(CFirst);
     cout<<"------------------------\n";
@@ -88,19 +104,21 @@ int main(){
 Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
 
     Contact_node *searched[10000] ;
-    string:: size_type pos;
+    string:: size_type pos , fpos, lpos;
     Contact_node *Ccurrent = Cfirst;
     Phone_node *Pcurrent = NULL;
-    int count =0;
+    
+    count =0;
     bool loop=true;
 
     if (isDigit(GetText)){
-        while (!Ccurrent){
+        while (Ccurrent){
             Pcurrent = Ccurrent ->pnode;
             while (!Pcurrent){
                 pos = Pcurrent->number.find(GetText);
-                if (pos != string::npos){
+                if (pos != std::string::npos){
                     searched[count] = Ccurrent;
+                    cout<<Ccurrent<<endl;
                     cout <<searched[count]<<endl;
                     count++;
                     break;
@@ -110,24 +128,23 @@ Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
             Ccurrent = Ccurrent->next;
         }
         if(count == 0) {
-            delete searched;
             return NULL;
         }
         return *searched;
     }else{
-        while (!Ccurrent)
-        {
-            pos = Ccurrent ->fname.find(GetText);
-            pos = Ccurrent ->lname.find(GetText);
-            if (pos != string::npos){
+        
+        while (Ccurrent)
+        {   
+            
+            fpos = (Ccurrent ->fname).find(GetText);
+            lpos = (Ccurrent ->lname).find(GetText);
+            if (fpos != string::npos || lpos != string::npos){
                 searched[count] = Ccurrent;
-                cout <<searched[count]<<endl;
                 count++;
             }
             Ccurrent = Ccurrent ->next;
         }
         if(count == 0) {
-            delete searched;
             return NULL;
         }    
         return *searched;
