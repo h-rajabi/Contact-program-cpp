@@ -97,7 +97,7 @@ void Write_phone_fille(string Id, string Phone[],int count){
     if(!Contactsfille) cout<<"error! :can not open fille contact\n";
     for (int i = 0; i < count; i++)
     {
-       Contactsfille<<Id<<"\t"<<Phone<<"\n";//added to fille partner 
+        Contactsfille<<Id<<"\t"<<Phone[i]<<"\n";//added to fille partner 
         cout<<"your Phone addede to file\n";
         Contactsfille.close();
     }
