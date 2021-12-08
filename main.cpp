@@ -104,25 +104,44 @@ void Add_contact(Contact_node **Cfirst, Phone_node **Pfirst, int count){
     bool loop = true;
     while (loop)
     {
-        cout<<"-Enter First Name:";
+        cout<<"-Enter First Name :";
         cin>>Fname;
-        cout<<"-Enter Last Name:";
+        cout<<"-Enter Last Name :";
         cin>>Lname;
         
-        for (int i = 0; i < 20; i++)
-        {
-            cout<<"-Enter Phone Number(0 : break) :";
+        while (true){
+            cout<<"-Enter Phone Number(0 : done):";
             cin>>phone;
-            if(!Check_phone(phone)) {
-
-                
+            if(phone=="0") break;
+            else if (count2 == 20) {
+                cout <<"error! : you just can add 20 number\n";
+                break;
+            }
+            else if(Check_phone(phone)) {
+               Phonelist[count2]=phone;
+               count2++;
             }
         }
         
-        
+        while (true)
+        {
+            char *sure = new char;
+            cout<<"first name \t last name \n"<< Fname<<" \t "<<Lname<<"\n"<<"Phones :\n";
+            for (int i = 0; i < count2; i++)
+            {
+                cout<<i<<") "<<Phonelist[i]<<endl;
+            }
+            cout<<"are you sure about contact details (y , n) :";
+            cin>>sure;
+            if(*sure == 'n') break;
+            else if (*sure == 'y')
+            {
+                loop = false;
+                break;
+            }
+            else cout<<"error! : enter (y : YES )or (n : NO) \n";
+        }   
     }
-    
-
 }
 
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
