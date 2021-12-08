@@ -47,11 +47,11 @@ Contact_node *Search_by_id(Contact_node *first, string Get_id);
 
 void Print_list_phone(Contact_node *Cfirst);
 
-void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber);
+void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber[], int count);
 
 void Write_contact_fille(string Id, string Fname, string Lname);
 
-void Write_phone_fille(string Id, string Phone);
+void Write_phone_fille(string Id, string Phone[], int count);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -90,16 +90,17 @@ void Write_contact_fille(string Id, string Fname, string Lname){
     Contactsfille.close();
 
 }
-// ? get phone list
-void Write_phone_fille(string Id, string Phone){
+// ? updte get list phone
+void Write_phone_fille(string Id, string Phone[],int count){
 
     ofstream Contactsfille("contact_phone.txt",ios::app);
     if(!Contactsfille) cout<<"error! :can not open fille contact\n";
-
-    Contactsfille<<Id<<"\t"<<Phone<<"\n";//added to fille partner 
-    cout<<"your Phone addede to file\n";
-    Contactsfille.close();
-
+    for (int i = 0; i < count; i++)
+    {
+       Contactsfille<<Id<<"\t"<<Phone<<"\n";//added to fille partner 
+        cout<<"your Phone addede to file\n";
+        Contactsfille.close();
+    }
 }
 
 // TODO : add contact 
@@ -156,20 +157,20 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
     Write_contact_fille(to_string(count),Fname,Lname);
     Cfirst=Add_last_node_contact(Cfirst, to_string(count), Fname, Lname);
 
-    for (int i = 0; i < count2; i++)
-    {
-        Write_phone_fille(to_string(count),Phonelist[i]);
-        merge_phone_contact(Cfirst,to_string(count),Phonelist[i]);
-    }
+    Write_phone_fille(to_string(count), Phonelist, count2);
+    merge_phone_contact(Cfirst, to_string(count), Phonelist, count2);
+    
     return Cfirst;
 }
-
-void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber){
+// ? updte get list phone
+void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber[], int count){
 
     Contact_node *Current = Cfirst;
-    Current = Search_by_id(Cfirst, Id);
-    Current ->pnode = Add_first_node_phone(Current ->pnode, Id, PhoneNumber);
-    
+    for (int i = 0; i < count; i++)
+    {
+        Current = Search_by_id(Cfirst, Id);
+        Current ->pnode = Add_first_node_phone(Current ->pnode, Id, PhoneNumber[i]);
+    }
 }
 
 void Print_list_phone(Contact_node *Cfirst){
@@ -196,7 +197,7 @@ void Read_phone(Contact_node *Cfirst){
     
     // ? error in using heap  
     while (Phonefille>> *Id>> *Phone) {
-        merge_phone_contact(Cfirst, *Id, *Phone); 
+        merge_phone_contact(Cfirst, *Id, Phone,1); 
     }//get info from partner fille
     
     Phonefille.close();
@@ -405,7 +406,7 @@ void menu(){
 Contact_node *Read_contacts_name(Contact_node *first, int &count){
     string Id, FirstName, LastName;
     ifstream Contactfille("Contact_name.txt");
-    if(!Contactfille) {cout<<"error! :can not open file partner\n"; return 0;}
+    if(!Contactfille) {cout<<"error! :can not open file partner\n"; return NULL;}
 
     while (Contactfille>>Id>>FirstName>>LastName) {
         first=Add_last_node_contact(first,Id,FirstName,LastName);
