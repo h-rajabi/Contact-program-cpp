@@ -72,7 +72,7 @@ int main(){
     CFirst=Add_contact(CFirst , count);
     cout<<"------------------------\n";
     Print_list_contacts(CFirst);
-    
+
     return 0;//TODO debug error
 }
 
@@ -102,7 +102,8 @@ void Write_phone_fille(string Id, string Phone){
 
 }
 
-// TODO : add contact
+// TODO : add contact 
+//  OK
 Contact_node *Add_contact(Contact_node *Cfirst, int &count){
 
     string Fname,Lname,phone,Phonelist[20];
