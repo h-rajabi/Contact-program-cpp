@@ -1,6 +1,7 @@
 #include <iostream>
 #include "string.h"
 #include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -53,6 +54,8 @@ void Write_contact_fille(string Id, string Fname, string Lname);
 
 void Write_phone_fille(string Id, string Phone[], int count);
 
+Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -67,18 +70,71 @@ int main(){
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
+
+    /*
     Print_list_contacts(CFirst);
     cout<<"------------------------\n";
     CFirst=Add_contact(CFirst , count);
     cout<<"------------------------\n";
     Print_list_contacts(CFirst);
-
+    */
     return 0;//TODO debug error
 }
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
+// TODO advance search
+Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
+
+    Contact_node *searched[10000] ;
+    string:: size_type pos;
+    Contact_node *Ccurrent = Cfirst;
+    Phone_node *Pcurrent = NULL;
+    int count =0;
+    bool loop=true;
+
+    if (isDigit(GetText)){
+        while (!Ccurrent){
+            Pcurrent = Ccurrent ->pnode;
+            while (!Pcurrent){
+                pos = Pcurrent->number.find(GetText);
+                if (pos != string::npos){
+                    searched[count] = Ccurrent;
+                    cout <<searched[count]<<endl;
+                    count++;
+                    break;
+                }
+                Pcurrent = Pcurrent ->next;
+            }
+            Ccurrent = Ccurrent->next;
+        }
+        if(count == 0) {
+            delete searched;
+            return NULL;
+        }
+        return *searched;
+    }else{
+        while (!Ccurrent)
+        {
+            pos = Ccurrent ->fname.find(GetText);
+            pos = Ccurrent ->lname.find(GetText);
+            if (pos != string::npos){
+                searched[count] = Ccurrent;
+                cout <<searched[count]<<endl;
+                count++;
+            }
+            Ccurrent = Ccurrent ->next;
+        }
+        if(count == 0) {
+            delete searched;
+            return NULL;
+        }    
+        return *searched;
+    }
+    
+
+}
 
 void Write_contact_fille(string Id, string Fname, string Lname){
 
@@ -90,7 +146,7 @@ void Write_contact_fille(string Id, string Fname, string Lname){
     Contactsfille.close();
 
 }
-// ? updte get list phone
+
 void Write_phone_fille(string Id, string Phone[],int count){
 
     ofstream Contactsfille("contact_phone.txt",ios::app);
@@ -104,7 +160,6 @@ void Write_phone_fille(string Id, string Phone[],int count){
 }
 
 // TODO : add contact 
-//  OK
 Contact_node *Add_contact(Contact_node *Cfirst, int &count){
 
     string Fname,Lname,phone,Phonelist[20];
@@ -162,7 +217,7 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
     
     return Cfirst;
 }
-// ? updte get list phone
+
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber[], int count){
 
     Contact_node *Current = Cfirst;
