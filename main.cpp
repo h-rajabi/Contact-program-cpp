@@ -54,7 +54,7 @@ void Write_contact_fille(string Id, string Fname, string Lname);
 
 void Write_phone_fille(string Id, string Phone[], int count);
 
-Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count);
+Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -71,18 +71,18 @@ int main(){
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
     
-// ? ---------------------------
+// ? -------------------------------------
 
-    Print_list_contacts(CFirst);
+    // Print_list_contacts(CFirst);
     int count2=0 ;
-    Contact_node *search[10000]; 
-    *search=Advancedsearch(CFirst,"ssein",count2);
+    Contact_node **search; 
+    search = Advancedsearch(CFirst,"ssein",count2);
     // ! error in returned arr of struct 
     cout<<"----------------------------\n";
-    if(!search) cout << "NOT Found\n"; 
+    if(!search) cout << "NOT Find\n"; 
     else 
         for (int i = 0; i < 10; i++){
-            cout<<search[i]<<endl;
+            cout<<search[i]->id <<"\t"<<search[i]->fname<<endl;
             // cout<<i+1<<") "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
             // Print_list_phone(search[i]);
         }
@@ -101,13 +101,13 @@ int main(){
 // ? -----------------------------------------------------------------------------
 
 // TODO advance search
-Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
+Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
 
-    Contact_node *searched[10000] ;
+    Contact_node **searched = new Contact_node*[100] ;
     string:: size_type pos , fpos, lpos;
     Contact_node *Ccurrent = Cfirst;
     Phone_node *Pcurrent = NULL;
-    
+
     count =0;
     bool loop=true;
 
@@ -117,9 +117,7 @@ Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
             while (!Pcurrent){
                 pos = Pcurrent->number.find(GetText);
                 if (pos != std::string::npos){
-                    searched[count] = Ccurrent;
-                    cout<<Ccurrent<<endl;
-                    cout <<searched[count]<<endl;
+                    searched[count] = Ccurrent;// ? get address node searched text
                     count++;
                     break;
                 }
@@ -130,26 +128,25 @@ Contact_node *Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
         if(count == 0) {
             return NULL;
         }
-        return *searched;
+        return searched;
     }else{
-        
+
         while (Ccurrent)
-        {   
-            
+        {
+
             fpos = (Ccurrent ->fname).find(GetText);
             lpos = (Ccurrent ->lname).find(GetText);
             if (fpos != string::npos || lpos != string::npos){
-                searched[count] = Ccurrent;
+                searched[count] = Ccurrent;// ? get address node searched text
                 count++;
             }
             Ccurrent = Ccurrent ->next;
         }
         if(count == 0) {
             return NULL;
-        }    
-        return *searched;
+        }
+        return searched;
     }
-    
 
 }
 
