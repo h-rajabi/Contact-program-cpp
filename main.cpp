@@ -56,7 +56,13 @@ void Write_new_phone_fille(string Id, string Phone[], int count);
 
 Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count);
 
+Contact_node *Search_result(Contact_node *Cfirst);
+
 void clear_list(Contact_node *first);
+
+void Write_contacts_fille(Contact_node *first);
+
+void Write_phones_fille(Phone_node *first);
 
 
 
@@ -68,8 +74,6 @@ int main(){
     Contact_node *CFirst =NULL;
     Phone_node * PFirst = NULL;
     int count = 0;
-    // Write_contact_fille("4","amir","karami");
-    // Write_phone_fille("4","91682512354");
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
@@ -77,19 +81,19 @@ int main(){
 // ? -------------------------------------
 
     // Print_list_contacts(CFirst);
-    int count2=0 ;
-    Contact_node **search; 
-    search = Advancedsearch(CFirst,"ssein",count2);
-    // ! error in returned arr of struct 
-    cout<<"----------------------------\n";
-    if(!search) cout << "NOT Find\n"; 
-    else 
-        for (int i = 0; i < 10; i++){
-            cout<<search[i]->id <<"\t"<<search[i]->fname<<endl;
-            // cout<<i+1<<") "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
-            // Print_list_phone(search[i]);
-        }
-    clear_list(CFirst);
+    // int count2=0 ;
+    // Contact_node **search; 
+    // search = Advancedsearch(CFirst,"ssein",count2);
+    // // ! error in returned arr of struct 
+    // cout<<"----------------------------\n";
+    // if(!search) cout << "NOT Find\n"; 
+    // else 
+    //     for (int i = 0; i < 10; i++){
+    //         cout<<search[i]->id <<"\t"<<search[i]->fname<<endl;
+    //         // cout<<i+1<<") "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
+    //         // Print_list_phone(search[i]);
+    //     }
+    // clear_list(CFirst);
     
     /*
     Print_list_contacts(CFirst);
@@ -103,6 +107,70 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+// TODO : Write all linked list contact to fille  
+void Write_contacts_fille(Contact_node *first){
+    Contact_node *Current = first;
+    ofstream ContactFille("Partner.txt");
+    if(!ContactFille) cout<<"error! :can not open file \n";
+    while (Current){
+        ContactFille<<Current->id<<"\t"<<Current->fname<<"\t"<<Current->lname<<endl;
+        Current = Current ->next;
+    }
+    ContactFille.close();
+    system("cls");
+    cout<<"Successfully changed"<<endl;
+
+}
+
+// TODO : write all linked list phones to fille 
+void Write_phones_fille(Phone_node *first){
+    Phone_node *Current = first;
+    ofstream PhoneFille("Partner.txt");
+    if(!PhoneFille) cout<<"error! :can not open file \n";
+    while (Current){
+        PhoneFille<<Current->id<<"\t"<<Current->number<<endl;
+        Current = Current ->next;
+    }
+    PhoneFille.close();
+    system("cls");
+    cout<<"Successfully changed"<<endl;
+
+
+}
+
+// TODO : search in contact and print result 
+Contact_node *Search_result(Contact_node *Cfirst){
+
+    Contact_node **search;
+    bool loop=true;
+    string details; 
+    while (loop){
+        system("cls");
+        cout<<"-Enter details (0 : back):";
+        cin>>details;
+        if(details == "0") break;
+        int count=0;
+        search = Advancedsearch(Cfirst,details,count);
+        if(!search) cout << "NOT Find\n"; 
+        else{
+            int menu;
+            cout <<"\t Result \n";
+            cout<<"Number\t FirstName\t LastName\n"; 
+            for (int i = 0; i < count; i++){
+                cout<<i+1<<")\t "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
+            }
+            while (true)
+            {
+                cout << "-Enter number contact(0 : back):";
+                cin>>menu;
+                if(menu == 0) break;
+                else if (menu > count) cout<<"error! : not match code menu \n";
+                else return search[menu-1];
+            }
+        }    
+    }
+    return NULL;
+}
 
 void clear_list(Contact_node *first)
 {
@@ -115,7 +183,6 @@ void clear_list(Contact_node *first)
     }
 }
 
-// TODO advance search
 Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
 
     Contact_node **searched = new Contact_node*[100] ;
