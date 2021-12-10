@@ -70,7 +70,7 @@ Contact_node *Delete_contact(Contact_node *Cfirst);
 
 void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst=NULL, Phone_node *GetPaddress=NULL);
 
-
+void Add_phone_to_contact(Contact_node *first);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ int main(){
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
     Delete_contact(CFirst);
-    Print_list_contacts(CFirst);
+    clear_list(CFirst);
 // ? -------------------------------------
 
     // Print_list_contacts(CFirst);
@@ -114,6 +114,43 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+
+void Add_phone_to_contact(Contact_node *first){
+
+    Contact_node *Search =NULL;
+    Phone_node *Pfirst = NULL;
+    string *Phonelist= new string[20];
+    bool loop = true;
+    string phone ;
+    int count2;
+    char sure; 
+
+    Search =Search_result(first);
+    while (true){
+        cout<<"-Enter Phone Number(0 : done):";
+        cin>>phone;
+        if(phone=="0") break;
+        else if (count2 == 20) {
+            cout <<"error! : you just can add 20 number\n";
+            break;
+        }
+        else if(Check_phone(phone)) {
+            cout << "- Are you sure add "<<phone<<" to contact (y/n)?";
+            cin>>sure;
+            if(sure == 'y'){
+                Phonelist[count2]=phone;
+                Pfirst = Add_first_node_phone(Search->pnode, Search->id, phone);
+                Search->pnode = Pfirst;
+                count2++;
+            }
+            else if (sure != 'n') cout << "enter y : YES or n :NO\n";    
+        }
+    }
+    Write_new_phone_fille(Search->id,Phonelist,count2);
+    delete Phonelist;
+    
+
+}
 
 void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst, Phone_node *GetPaddress){
 
@@ -196,7 +233,7 @@ void Write_phones_fille(Contact_node *first){
     system("cls");
     cout<<"Successfully changed"<<endl;
 }
-// TODO : update if just one result return addres 
+
 Contact_node *Search_result(Contact_node *Cfirst){
 
     Contact_node **search;
@@ -208,7 +245,8 @@ Contact_node *Search_result(Contact_node *Cfirst){
         if(details == "0") break;
         int count=0;
         search = Advancedsearch(Cfirst,details,count);
-        if(!search) cout << "NOT Find\n"; 
+        if(!search) cout << "NOT Find\n";
+        else if (count == 1) return search[0]; 
         else{
             int menu;
             cout <<"\t Result \n";
@@ -438,9 +476,10 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
                 break;
             }
             else cout<<"error! : enter (y : YES )or (n : NO) \n";
+            delete sure;
         }   
     }
-
+    
     Write_new_contact_fille(to_string(count),Fname,Lname);
     Cfirst=Add_last_node_contact(Cfirst, to_string(count), Fname, Lname);
 
@@ -676,7 +715,7 @@ Contact_node *Read_contacts_name(Contact_node *first, int &count){
     if(!Contactfille) {cout<<"error! :can not open file partner\n"; return NULL;}
 
     while (Contactfille>>Id>>FirstName>>LastName) {
-        first=Add_last_node_contact(first,Id,FirstName,LastName);
+        first=Add_first_node_contact(first,Id,FirstName,LastName);
         count++;
     }//get info from partner fille
     
