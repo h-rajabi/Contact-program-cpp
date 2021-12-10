@@ -70,6 +70,8 @@ Contact_node *Delete_contact(Contact_node *Cfirst);
 
 void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node *Pfirst=NULL, Phone_node *GetPaddress=NULL);
 
+
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -112,7 +114,7 @@ int main(){
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
-void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst=NULL, Phone_node *GetPaddress=NULL){
+void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst, Phone_node *GetPaddress){
 
     if(!(*Cfirst)){
 
@@ -142,9 +144,26 @@ void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **
         delete GetCaddress;
         return ;
     }
-    
+
 }
 
+Contact_node *Delete_contact(Contact_node *Cfirst){
+
+    Contact_node *Search =NULL;
+    Search =Search_result(Cfirst);
+    char sure;
+    cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
+    cout<<"are you sure delete contact (y/n) :";
+    cin>>sure;
+    if(sure == 'y'){
+        Delete_node(&Cfirst,Search);
+        Write_contacts_fille(Cfirst);
+        Write_phones_fille(Cfirst);
+        return Cfirst;
+    }
+    else 
+        return Cfirst;
+}
 
 void Write_contacts_fille(Contact_node *first){
     Contact_node *Current = first;
