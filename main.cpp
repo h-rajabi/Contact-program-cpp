@@ -83,7 +83,8 @@ int main(){
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
-    Delete_contact(CFirst);
+    Add_phone_to_contact(CFirst);
+    cout<<"----------------------------------------\n";
     clear_list(CFirst);
 // ? -------------------------------------
 
@@ -122,10 +123,12 @@ void Add_phone_to_contact(Contact_node *first){
     string *Phonelist= new string[20];
     bool loop = true;
     string phone ;
-    int count2;
+    int count2=0;
     char sure; 
 
     Search =Search_result(first);
+    cout<<"\t Add phone \n";
+    cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
     while (true){
         cout<<"-Enter Phone Number(0 : done):";
         cin>>phone;
@@ -146,7 +149,8 @@ void Add_phone_to_contact(Contact_node *first){
             else if (sure != 'n') cout << "enter y : YES or n :NO\n";    
         }
     }
-    Write_new_phone_fille(Search->id,Phonelist,count2);
+    cout<<"count 2:"<<count2;
+    Write_new_phone_fille(Search->id, Phonelist, count2);
     delete Phonelist;
     
 
@@ -423,11 +427,11 @@ void Write_new_phone_fille(string Id, string Phone[],int count){
     ofstream Contactsfille("contact_phone.txt",ios::app);
     if(!Contactsfille) cout<<"error! :can not open fille contact\n";
     for (int i = 0; i < count; i++)
-    {
-        Contactsfille<<Id<<"\t"<<Phone[i]<<"\n";//added to fille partner 
-        cout<<"your Phone addede to file\n";
-        Contactsfille.close();
+    {   
+        Contactsfille<<Id<<"\t"<<Phone[i]<<"\n";//added to fille partner  
     }
+    Contactsfille.close();
+    cout<<"your Phone addede to file\n";
 }
 
 Contact_node *Add_contact(Contact_node *Cfirst, int &count){
