@@ -50,17 +50,20 @@ void Print_list_phone(Contact_node *Cfirst);
 
 void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber[], int count);
 
-void Write_contact_fille(string Id, string Fname, string Lname);
+void Write_new_contact_fille(string Id, string Fname, string Lname);
 
-void Write_phone_fille(string Id, string Phone[], int count);
+void Write_new_phone_fille(string Id, string Phone[], int count);
 
 Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count);
+
+void clear_list(Contact_node *first);
+
+
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
 int main(){
-    
     
     Contact_node *CFirst =NULL;
     Phone_node * PFirst = NULL;
@@ -86,6 +89,7 @@ int main(){
             // cout<<i+1<<") "<<search[i]->fname <<"\t"<<search[i]->lname<<endl;
             // Print_list_phone(search[i]);
         }
+    clear_list(CFirst);
     
     /*
     Print_list_contacts(CFirst);
@@ -99,6 +103,17 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+
+void clear_list(Contact_node *first)
+{
+    Contact_node *current = first;
+    while (current != NULL)
+    {
+        Contact_node *temp = current;
+        current = current->next;
+        delete temp;
+    }
+}
 
 // TODO advance search
 Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
@@ -150,7 +165,7 @@ Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
 
 }
 
-void Write_contact_fille(string Id, string Fname, string Lname){
+void Write_new_contact_fille(string Id, string Fname, string Lname){
 
     ofstream Contactsfille("Contact_name.txt",ios::app);
     if(!Contactsfille) cout<<"error! :can not open fille contact\n";
@@ -161,7 +176,7 @@ void Write_contact_fille(string Id, string Fname, string Lname){
 
 }
 
-void Write_phone_fille(string Id, string Phone[],int count){
+void Write_new_phone_fille(string Id, string Phone[],int count){
 
     ofstream Contactsfille("contact_phone.txt",ios::app);
     if(!Contactsfille) cout<<"error! :can not open fille contact\n";
@@ -173,7 +188,6 @@ void Write_phone_fille(string Id, string Phone[],int count){
     }
 }
 
-// TODO : add contact 
 Contact_node *Add_contact(Contact_node *Cfirst, int &count){
 
     string Fname,Lname,phone,Phonelist[20];
@@ -223,10 +237,10 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
         }   
     }
 
-    Write_contact_fille(to_string(count),Fname,Lname);
+    Write_new_contact_fille(to_string(count),Fname,Lname);
     Cfirst=Add_last_node_contact(Cfirst, to_string(count), Fname, Lname);
 
-    Write_phone_fille(to_string(count), Phonelist, count2);
+    Write_new_phone_fille(to_string(count), Phonelist, count2);
     merge_phone_contact(Cfirst, to_string(count), Phonelist, count2);
     
     return Cfirst;
