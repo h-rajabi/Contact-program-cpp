@@ -66,6 +66,10 @@ void Write_phones_fille(Contact_node *first);
 
 void Edete_contact(Contact_node *first);
 
+Contact_node *Delete_contact(Contact_node *Cfirst);
+
+void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node *Pfirst=NULL, Phone_node *GetPaddress=NULL);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -107,7 +111,41 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
-// TODO : check  
+
+void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst=NULL, Phone_node *GetPaddress=NULL){
+
+    if(!(*Cfirst)){
+
+        Phone_node *Current = *Pfirst;
+        if(Current == GetPaddress){
+            *Pfirst=GetPaddress->next;
+            delete GetPaddress;
+            return;
+        }
+        while (Current->next != GetPaddress){
+            Current = Current->next;
+        }
+        Current ->next = GetPaddress->next;
+        delete GetPaddress;
+        return ;
+    }else{
+        Contact_node *Current = *Cfirst;
+        if(Current == GetCaddress){
+            *Cfirst=GetCaddress->next;
+            delete GetCaddress;
+            return;
+        }
+        while (Current->next != GetCaddress){
+            Current = Current->next;
+        }
+        Current ->next = GetCaddress->next;
+        delete GetCaddress;
+        return ;
+    }
+    
+}
+
+
 void Write_contacts_fille(Contact_node *first){
     Contact_node *Current = first;
     ofstream ContactFille("Contact_name.txt");
@@ -122,7 +160,6 @@ void Write_contacts_fille(Contact_node *first){
 
 }
 
-// TODO : check
 void Write_phones_fille(Contact_node *first){
     ofstream PhoneFille("contact_phone.txt");
     if(!PhoneFille) {cout<<"error! :can not open file \n"; return ;}
@@ -140,7 +177,6 @@ void Write_phones_fille(Contact_node *first){
     cout<<"Successfully changed"<<endl;
 }
 
-// TODO : search in contact and print result 
 Contact_node *Search_result(Contact_node *Cfirst){
 
     Contact_node **search;
@@ -654,12 +690,4 @@ bool isDigit(string x){
     }while(x[i] != '.');
     return true;
 }
-
-
-
-
-
-
-
-
 
