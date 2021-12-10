@@ -68,7 +68,7 @@ void Edete_contact(Contact_node *first);
 
 Contact_node *Delete_contact(Contact_node *Cfirst);
 
-void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node *Pfirst=NULL, Phone_node *GetPaddress=NULL);
+void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst=NULL, Phone_node *GetPaddress=NULL);
 
 
 
@@ -83,7 +83,8 @@ int main(){
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
-    Edete_contact(CFirst);
+    Delete_contact(CFirst);
+    Print_list_contacts(CFirst);
 // ? -------------------------------------
 
     // Print_list_contacts(CFirst);
@@ -195,7 +196,7 @@ void Write_phones_fille(Contact_node *first){
     system("cls");
     cout<<"Successfully changed"<<endl;
 }
-
+// TODO : update if just one result return addres 
 Contact_node *Search_result(Contact_node *Cfirst){
 
     Contact_node **search;
