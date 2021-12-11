@@ -72,6 +72,8 @@ void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **
 
 void Add_phone_to_contact(Contact_node *first);
 
+void Delete_phone(Contact_node *first);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -83,7 +85,9 @@ int main(){
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
-    Add_phone_to_contact(CFirst);
+    // Add_phone_to_contact(CFirst);
+    Delete_phone(CFirst);
+    Print_list_contacts(CFirst);
     cout<<"----------------------------------------\n";
     clear_list(CFirst);
 // ? -------------------------------------
@@ -115,6 +119,36 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+
+void Delete_phone(Contact_node *Cfirst){
+
+    Contact_node *Search=NULL;
+    char sure;
+    int count, pmenu;
+    Search = Search_result(Cfirst);
+    system("cls");
+    while (true){
+        cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
+        Print_list_phone(Search, count);
+        cout<<"-Enter code phone for delete (0: back) :";
+        cin>>pmenu;
+        if(pmenu == 0) break;
+        else if(pmenu > count) cout<<"error! :not match code\n";
+        else {
+            Phone_node *first = Search->pnode;
+            for (int i = 1; i < pmenu; i++){
+                first = first->next;
+            }
+            cout<<"\n are you sure deleted "<< first->number <<" (y/n):";
+            cin>>sure;
+            if(sure == 'y' || sure == 'Y'){
+                Delete_node(NULL,NULL,&(Search->pnode),first);
+                Write_phones_fille(Cfirst);
+                cout<<"The number was successfully deleted!!\n";
+            }else if(sure != 'n' || sure != 'N') cout<<"error! :not match code\n";
+        }
+    }
+}
 
 void Add_phone_to_contact(Contact_node *first){
 
@@ -157,9 +191,8 @@ void Add_phone_to_contact(Contact_node *first){
 }
 
 void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **Pfirst, Phone_node *GetPaddress){
-
-    if(!(*Cfirst)){
-
+    
+    if(!Cfirst){
         Phone_node *Current = *Pfirst;
         if(Current == GetPaddress){
             *Pfirst=GetPaddress->next;
@@ -235,7 +268,7 @@ void Write_phones_fille(Contact_node *first){
     }
     PhoneFille.close();
     system("cls");
-    cout<<"Successfully changed"<<endl;
+    cout<<"Successfully changed fille"<<endl;
 }
 
 Contact_node *Search_result(Contact_node *Cfirst){
