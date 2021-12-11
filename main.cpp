@@ -90,6 +90,8 @@ int main(){
     Print_list_contacts(CFirst);
     cout<<"----------------------------------------\n";
     Delete_duplicate_number(CFirst);
+    cout<<"----------------------------------------\n";
+    Print_list_contacts(CFirst);
     clear_list(CFirst);
 // ? -------------------------------------
     delete CFirst,PFirst;
@@ -132,8 +134,8 @@ void Delete_duplicate_number(Contact_node *Cfirst){
             duplicate = Pcurrent;
             search=duplicate->next;
             while (search){
-                if(search == duplicate) {
-                    Delete_node(NULL,NULL,&Pcurrent,search);
+                if(search->number == duplicate->number) {
+                    Delete_node(NULL,NULL,&(Ccurrent->pnode),search);
                     cout<<"contact :"<<Ccurrent->fname<<" "<<Ccurrent->lname<<" deleted depulicate number :["<<duplicate->number<<"]\n";
                 }
                 search = search->next;
