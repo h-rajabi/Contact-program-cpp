@@ -74,24 +74,25 @@ void Add_phone_to_contact(Contact_node *first);
 
 void Delete_phone(Contact_node *first);
 
+void Delete_duplicate_number(Contact_node *Cfirst);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
 int main(){
     
     Contact_node *CFirst =NULL;
-    Phone_node * PFirst = NULL;
+    Phone_node *PFirst = NULL;
     int count = 0;
 
     CFirst = Read_contacts_name(CFirst,count);
     Read_phone(CFirst);
-    // Add_phone_to_contact(CFirst);
-    Delete_phone(CFirst);
     Print_list_contacts(CFirst);
     cout<<"----------------------------------------\n";
+    Delete_duplicate_number(CFirst);
     clear_list(CFirst);
 // ? -------------------------------------
-
+    delete CFirst,PFirst;
     // Print_list_contacts(CFirst);
     // int count2=0 ;
     // Contact_node **search; 
@@ -120,13 +121,38 @@ int main(){
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
+void Delete_duplicate_number(Contact_node *Cfirst){
+
+    Contact_node *Ccurrent=Cfirst;
+    Phone_node *Pcurrent=NULL, *duplicate=NULL, *search=NULL;
+    int count =0;
+    while (Ccurrent){
+        Pcurrent = Ccurrent->pnode;
+        while (Pcurrent){
+            duplicate = Pcurrent;
+            search=duplicate->next;
+            while (search){
+                if(search == duplicate) {
+                    Delete_node(NULL,NULL,&Pcurrent,search);
+                    cout<<"contact :"<<Ccurrent->fname<<" "<<Ccurrent->lname<<" deleted depulicate number :["<<duplicate->number<<"]\n";
+                }
+                search = search->next;
+            }
+            Pcurrent = Pcurrent->next;
+        }
+        Ccurrent = Ccurrent->next;
+    }
+    delete Ccurrent,Pcurrent,duplicate,search;
+    Write_phones_fille(Cfirst);
+}
+
 void Delete_phone(Contact_node *Cfirst){
 
     Contact_node *Search=NULL;
     char sure;
     int count, pmenu;
     Search = Search_result(Cfirst);
-    system("cls");
+    
     while (true){
         cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
         Print_list_phone(Search, count);
@@ -197,7 +223,7 @@ void Delete_node(Contact_node **Cfirst, Contact_node *GetCaddress, Phone_node **
         if(Current == GetPaddress){
             *Pfirst=GetPaddress->next;
             delete GetPaddress;
-            return;
+            return ;
         }
         while (Current->next != GetPaddress){
             Current = Current->next;
@@ -249,7 +275,6 @@ void Write_contacts_fille(Contact_node *first){
         Current = Current ->next;
     }
     ContactFille.close();
-    system("cls");
     cout<<"Successfully changed"<<endl;
 
 }
@@ -267,7 +292,7 @@ void Write_phones_fille(Contact_node *first){
         Ccurrent = Ccurrent ->next;
     }
     PhoneFille.close();
-    system("cls");
+    
     cout<<"Successfully changed fille"<<endl;
 }
 
