@@ -76,7 +76,7 @@ void Delete_phone(Contact_node *first);
 
 void Delete_duplicate_number(Contact_node *Cfirst);
 
-Contact_node *sorting(Contact_node *Cfirst);
+void sorting(Contact_node *Cfirst);
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
@@ -126,39 +126,157 @@ int main(){
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
-Contact_node *sorting(Contact_node *Cfirst)
+void sorting(Contact_node *Cfirst)
 {   
-    cout<<"sorting\n";
-	Contact_node *temphead = Cfirst;
-	Contact_node *tempnode = NULL;
-	int temproll;
-	string tempname;
-	int counter = 0;
-	while (temphead)
-	{
-		temphead = temphead->next;
-		counter++;
-	}
-	for (int i=0; i<counter; i++)
-	{
-		for (int j=0; j<counter-i; j++)
-		{
-			if (temphead->id > temphead->next->id)
-			{
-				tempnode = temphead;
-				temphead = temphead->next;
-				temphead->next = tempnode;
-			// 	temproll = temphead->roll;
-			// 	temphead->roll = temphead->next->roll;
-			// 	temphead->next->roll = temproll;
+	Contact_node *temp = Cfirst;
+    char menu;
+    bool loop=true;
+    while (loop){
+        cout<<"0: Back\n";
+        cout<<"1: First Name(A-Z)\n";
+        cout<<"2: First Name(Z-A)\n";
+        cout<<"3: Last Name(A-Z)\n";
+        cout<<"4: Last Name(Z-A)\n";
+        cout<<"5: count phone number\n";
+        cout<<"-Enter code menu :";
+        cin>>menu;
+        switch (menu)
+        {
+        case '0':
+            loop =false;
+            break;
+        case '1':
+            while (temp != NULL) {
+            Contact_node *temp2 = temp;
 
-			// 	tempname = temphead->name;
-			// 	temphead->name = temphead->next->name;
-			// 	temphead->next->name = tempname;
-			}
-		}
-	}
-    return Cfirst;
+            while (temp2 != NULL) {
+                if (tolower(temp->fname[0]) > tolower(temp2->fname[0])) {
+                    string tempId,tempFn,tempLn;
+                    Phone_node *tempPn;
+
+                    tempId = temp->id;
+                    temp->id = temp2->id;
+                    temp2->id = tempId;
+
+                    tempFn = temp->fname;
+                    temp->fname = temp2->fname;
+                    temp2->fname = tempFn;
+
+                    tempLn = temp->lname;
+                    temp->lname = temp2->lname;
+                    temp2->lname = tempLn;
+
+                    tempPn = temp->pnode;
+                    temp->pnode = temp2->pnode;
+                    temp2->pnode = tempPn;
+                }
+
+                temp2 = temp2->next;
+            }
+            temp = temp->next;
+        }
+            break;
+        case '2':
+            while (temp != NULL) {
+                Contact_node *temp2 = temp;
+
+                while (temp2 != NULL) {
+                    if (tolower(temp->fname[0]) < tolower(temp2->fname[0])) {
+                        string tempId,tempFn,tempLn;
+                        Phone_node *tempPn;
+
+                        tempId = temp->id;
+                        temp->id = temp2->id;
+                        temp2->id = tempId;
+
+                        tempFn = temp->fname;
+                        temp->fname = temp2->fname;
+                        temp2->fname = tempFn;
+
+                        tempLn = temp->lname;
+                        temp->lname = temp2->lname;
+                        temp2->lname = tempLn;
+
+                        tempPn = temp->pnode;
+                        temp->pnode = temp2->pnode;
+                        temp2->pnode = tempPn;
+                    }
+
+                    temp2 = temp2->next;
+                }
+                temp = temp->next;
+            }
+            break;
+        case '3':
+            while (temp != NULL) {
+                Contact_node *temp2 = temp;
+
+                while (temp2 != NULL) {
+                    if (tolower(temp->lname[0]) > tolower(temp2->lname[0])) {
+                        string tempId,tempFn,tempLn;
+                        Phone_node *tempPn;
+
+                        tempId = temp->id;
+                        temp->id = temp2->id;
+                        temp2->id = tempId;
+
+                        tempFn = temp->fname;
+                        temp->fname = temp2->fname;
+                        temp2->fname = tempFn;
+
+                        tempLn = temp->lname;
+                        temp->lname = temp2->lname;
+                        temp2->lname = tempLn;
+
+                        tempPn = temp->pnode;
+                        temp->pnode = temp2->pnode;
+                        temp2->pnode = tempPn;
+                    }
+
+                    temp2 = temp2->next;
+                }
+                temp = temp->next;
+            }
+            break;    
+        case '4':
+            while (temp != NULL) {
+                Contact_node *temp2 = temp;
+
+                while (temp2 != NULL) {
+                    if (tolower(temp->lname[0]) < tolower(temp2->lname[0])) {
+                        string tempId,tempFn,tempLn;
+                        Phone_node *tempPn;
+
+                        tempId = temp->id;
+                        temp->id = temp2->id;
+                        temp2->id = tempId;
+
+                        tempFn = temp->fname;
+                        temp->fname = temp2->fname;
+                        temp2->fname = tempFn;
+
+                        tempLn = temp->lname;
+                        temp->lname = temp2->lname;
+                        temp2->lname = tempLn;
+
+                        tempPn = temp->pnode;
+                        temp->pnode = temp2->pnode;
+                        temp2->pnode = tempPn;
+                    }
+
+                    temp2 = temp2->next;
+                }
+                temp = temp->next;
+            }
+            break;    
+        default:
+            break;
+        }    
+    }
+    
+
+
+    
 }
 
 void Delete_duplicate_number(Contact_node *Cfirst){
