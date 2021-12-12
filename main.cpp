@@ -76,6 +76,8 @@ void Delete_phone(Contact_node *first);
 
 void Delete_duplicate_number(Contact_node *Cfirst);
 
+Contact_node *sorting(Contact_node *Cfirst);
+
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
@@ -89,11 +91,12 @@ int main(){
     Read_phone(CFirst);
     Print_list_contacts(CFirst);
     cout<<"----------------------------------------\n";
-    Delete_duplicate_number(CFirst);
+    // Delete_duplicate_number(CFirst);
+    sorting(CFirst);
     cout<<"----------------------------------------\n";
     Print_list_contacts(CFirst);
     clear_list(CFirst);
-// ? -------------------------------------
+    // ? -------------------------------------
     delete CFirst,PFirst;
     // Print_list_contacts(CFirst);
     // int count2=0 ;
@@ -122,6 +125,41 @@ int main(){
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+
+Contact_node *sorting(Contact_node *Cfirst)
+{   
+    cout<<"sorting\n";
+	Contact_node *temphead = Cfirst;
+	Contact_node *tempnode = NULL;
+	int temproll;
+	string tempname;
+	int counter = 0;
+	while (temphead)
+	{
+		temphead = temphead->next;
+		counter++;
+	}
+	for (int i=0; i<counter; i++)
+	{
+		for (int j=0; j<counter-i; j++)
+		{
+			if (temphead->id > temphead->next->id)
+			{
+				tempnode = temphead;
+				temphead = temphead->next;
+				temphead->next = tempnode;
+			// 	temproll = temphead->roll;
+			// 	temphead->roll = temphead->next->roll;
+			// 	temphead->next->roll = temproll;
+
+			// 	tempname = temphead->name;
+			// 	temphead->name = temphead->next->name;
+			// 	temphead->next->name = tempname;
+			}
+		}
+	}
+    return Cfirst;
+}
 
 void Delete_duplicate_number(Contact_node *Cfirst){
 
