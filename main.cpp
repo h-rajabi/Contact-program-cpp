@@ -81,18 +81,49 @@ void Sorting(Contact_node *Cfirst);
 int Length_phone(Phone_node *Pfirt);
 
 bool Check_phone_exict(Contact_node *Cfirst, string getId, string getNumber);
+
+bool Check_contact_exict(Contact_node *first, string getId, string fname, string lname= NULL);
+
+string To_lower(string getText);
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
 int main(){
 
     menu();
-
-    return 0;//TODO debug error
+    return 0;
 }
 
 // ? functions 
 // ? -----------------------------------------------------------------------------
+string To_lower(string getText){
+
+    int count = getText.length();
+
+    for (int i = 0; i < count; i++)
+    {
+        getText[i]=tolower(getText[i]);
+    }
+    return getText;
+}
+
+bool Check_contact_exict(Contact_node *first, string getId, string fname, string lname){
+    Contact_node *Ccurrent =first;
+
+    while (Ccurrent){
+        
+        if(getId != Ccurrent->id){
+
+            return true;
+
+        }
+
+        Ccurrent = Ccurrent->next;
+    }
+    
+
+}
+
 bool Check_phone_exict(Contact_node *Cfirst, string getId, string getNumber){
 
     Contact_node *Ccurrent =Cfirst;
