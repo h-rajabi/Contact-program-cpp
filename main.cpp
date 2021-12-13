@@ -80,33 +80,13 @@ void Sorting(Contact_node *Cfirst);
 
 int Length_phone(Phone_node *Pfirt);
 
-bool Check_phone_exict(Contact_node *Cfirst, string getId);
+bool Check_phone_exict(Contact_node *Cfirst, string getId, string getNumber);
 // ? functions 
 // ? -----------------------------------------------------------------------------
 
 int main(){
-    string phone = "+989167603497";
 
-    Contact_node *CFirst =NULL;
-    // Phone_node *PFirst = NULL;
-    int count = 0;
-
-    CFirst = Read_contacts_name(CFirst,count);
-    Read_phone(CFirst);
-
-
-
-    // Print_list_contacts(CFirst);
-    // cout<<"----------------------------------------\n";
-    // // Delete_duplicate_number(CFirst);
-    // Sorting(CFirst);
-    // cout<<"----------------------------------------\n";
-    
-    clear_list(CFirst);
-    // ? -------------------------------------
-    // delete CFirst,PFirst;
-    
-    
+    menu();
 
     return 0;//TODO debug error
 }
@@ -450,15 +430,17 @@ void Add_phone_to_contact(Contact_node *first){
             break;
         }
         else if(Check_phone(phone)) {
-            cout << "- Are you sure add "<<phone<<" to contact (y/n)?";
-            cin>>sure;
-            if(sure == 'y'){
-                Phonelist[count2]=phone;
-                Pfirst = Add_first_node_phone(Search->pnode, Search->id, phone);
-                Search->pnode = Pfirst;
-                count2++;
+            if(Check_phone_exict(first,Search->id,phone)){
+                cout << "- Are you sure add "<<phone<<" to contact (y/n)?";
+                cin>>sure;
+                if(sure == 'y'){
+                    Phonelist[count2]=phone;
+                    Pfirst = Add_first_node_phone(Search->pnode, Search->id, phone);
+                    Search->pnode = Pfirst;
+                    count2++;
+                }
+                else if (sure != 'n') cout << "enter y : YES or n :NO\n"; 
             }
-            else if (sure != 'n') cout << "enter y : YES or n :NO\n";    
         }
     }
     cout<<"count 2:"<<count2;
@@ -642,12 +624,14 @@ void Edete_contact(Contact_node *Cfirst){
                     }
                     cout<<"-Enter new phone :";
                     cin>>Details_edete;
-                    if(Check_phone(Details_edete)){ 
-                        cout<<"\n are you sure "<< first->number <<" to "<<Details_edete<<" (y/n):";
-                        cin>>sure;
-                        if(sure == 'y'){
-                            first ->number = Details_edete;
-                            Write_phones_fille(Cfirst);
+                    if(Check_phone(Details_edete)){
+                        if (Check_phone_exict(Cfirst,Search->id,Details_edete)){
+                            cout<<"\n are you sure "<< first->number <<" to "<<Details_edete<<" (y/n):";
+                            cin>>sure;
+                            if(sure == 'y'){
+                                first ->number = Details_edete;
+                                Write_phones_fille(Cfirst);
+                            }
                         }
                     }
                 }
@@ -657,7 +641,6 @@ void Edete_contact(Contact_node *Cfirst){
             cout<<"error! : not match code\n";
             break;
         }
-
     }
 }
 
@@ -767,8 +750,10 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
                 break;
             }
             else if(Check_phone(phone)) {
-               Phonelist[count2]=phone;
-               count2++;
+                if(Check_phone_exict(Cfirst,to_string(count+1),phone)){
+                    Phonelist[count2]=phone;
+                    count2++;
+                }
             }
         }
         
@@ -817,8 +802,7 @@ void Print_list_phone(Contact_node *Cfirst, int &count){
     Phone_node *Pfirst=Cfirst ->pnode;
     // cout<<"Id\t First Name\t Last Name\n";
     count =0;
-    while (Pfirst)
-    {
+    while (Pfirst){
         cout<<count+1<<") "<<Pfirst->number<<"\t";
         Pfirst = Pfirst->next;
         count++;
@@ -966,6 +950,12 @@ Phone_node *Add_last_node_phone(Phone_node *Pfirst , string getId, string getPho
 
 void menu(){
     char menu;
+
+    Contact_node *CFirst =NULL;
+    int count = 0;
+    CFirst = Read_contacts_name(CFirst,count);
+    Read_phone(CFirst);
+
     while (true)
     {    
         cout<<"\tMenu\n";
@@ -986,34 +976,39 @@ void menu(){
         switch (menu)
         {
         case '0':
-            
+            clear_list(CFirst);
+            exit(1);
             break;    
         case '1':
-            
+            CFirst=Add_contact(CFirst,count);
             break;
         case '2':
-            
+            Print_list_contacts(CFirst);
             break;
         case '3':
-            
+            Edete_contact(CFirst);
             break;
         case '4':
-            
+            CFirst=Delete_contact(CFirst);
             break;
         case '5':
-            
+            Add_phone_to_contact(CFirst);
             break;
         case '6':
-            
+            Delete_phone(CFirst);
             break;
         case '7':
-            
+            Delete_duplicate_number(CFirst);
             break;
         case '8':
-            
+            Contact_node *search;
+            int count ;
+            search = Search_result(CFirst);
+            cout<<"contact : "<<search->fname<<"\t"<<search->lname<<endl;
+            Print_list_phone(CFirst,count);
             break;
         case '9':
-            
+            Sorting(CFirst);
             break;
                                         
         default:
