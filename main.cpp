@@ -64,7 +64,7 @@ void Write_contacts_fille(Contact_node *first);
 
 void Write_phones_fille(Contact_node *first);
 
-void Edete_contact(Contact_node *first);
+void edite_contact(Contact_node *first);
 
 Contact_node *Delete_contact(Contact_node *Cfirst);
 
@@ -89,12 +89,7 @@ string To_lower(string getText);
 // ? -----------------------------------------------------------------------------
 
 int main(){
-    Contact_node *CFirst =NULL;
-    int count = 0;
-    CFirst = Read_contacts_name(CFirst,count);
-    Read_phone(CFirst);
-    Check_contact_exict(CFirst,"2","NiMa","pour-karimy");
-    // menu();
+    menu();
 
     return 0;
 }
@@ -174,7 +169,9 @@ void Sorting(Contact_node *Cfirst){
 	Contact_node *current = Cfirst;
     char menu;
     bool loop=true;
+    system("cls");
     while (loop){
+        cout<<"\t\t Sorting\n\n";
         cout<<"0: Back\n";
         cout<<"1: First Name(A-Z) \n";
         cout<<"2: First Name(Z-A) \n";
@@ -184,12 +181,14 @@ void Sorting(Contact_node *Cfirst){
         cout<<"6: count phone number( less to more )\n";
         cout<<"-Enter code menu :";
         cin>>menu;
+        system("cls");
         switch (menu)
         {
         case '0':
             loop =false;
             break;
         case '1':
+            system("cls");
             while (current) {
             Contact_node *temp = current;
 
@@ -222,6 +221,7 @@ void Sorting(Contact_node *Cfirst){
         current = Cfirst;
             break;
         case '2':
+            system("cls");
             while (current ) {
                 Contact_node *temp = current;
 
@@ -254,6 +254,7 @@ void Sorting(Contact_node *Cfirst){
             current = Cfirst;
             break;
         case '3':
+            system("cls");
             while (current) {
                 Contact_node *temp = current;
 
@@ -286,6 +287,7 @@ void Sorting(Contact_node *Cfirst){
             current = Cfirst;
             break;    
         case '4':
+            system("cls");
             while (current ) {
                 Contact_node *temp = current;
 
@@ -318,6 +320,7 @@ void Sorting(Contact_node *Cfirst){
             current = Cfirst;
             break;   
         case '5':
+            system("cls");
             while (current ) {
                 Contact_node *temp = current;
 
@@ -350,6 +353,7 @@ void Sorting(Contact_node *Cfirst){
             current = Cfirst;
             break;
         case '6':
+            system("cls");
             while (current ) {
                 Contact_node *temp = current;
 
@@ -385,7 +389,7 @@ void Sorting(Contact_node *Cfirst){
             cout<<"error! : not match code \n";
             break;
         }
-        system("cls");
+        
         Print_list_contacts(Cfirst);    
     }
 }
@@ -395,6 +399,7 @@ void Delete_duplicate_number(Contact_node *Cfirst){
     Contact_node *Ccurrent=Cfirst;
     Phone_node *Pcurrent=NULL, *duplicate=NULL, *search=NULL;
     int count =0;
+    system("cls");
     while (Ccurrent){
         Pcurrent = Ccurrent->pnode;
         while (Pcurrent){
@@ -413,6 +418,7 @@ void Delete_duplicate_number(Contact_node *Cfirst){
     }
     delete Ccurrent,Pcurrent,duplicate,search;
     Write_phones_fille(Cfirst);
+    cout<<"---------------------------------------------------\n";
 }
 
 void Delete_phone(Contact_node *Cfirst){
@@ -421,8 +427,10 @@ void Delete_phone(Contact_node *Cfirst){
     char sure;
     int count, pmenu;
     Search = Search_result(Cfirst);
-    
+    system("cls");
+    if(!Search) return ;
     while (true){
+        cout<<"\t\t Delete phone\n";
         cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
         Print_list_phone(Search, count);
         cout<<"-Enter code phone for delete (0: back) :";
@@ -454,8 +462,9 @@ void Add_phone_to_contact(Contact_node *first){
     string phone ;
     int count2=0;
     char sure; 
-
     Search =Search_result(first);
+    if(!Search) return ;
+    system("cls");
     cout<<"\t Add phone \n";
     cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
     while (true){
@@ -524,17 +533,22 @@ Contact_node *Delete_contact(Contact_node *Cfirst){
     Contact_node *Search =NULL;
     Search =Search_result(Cfirst);
     char sure;
-    cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
-    cout<<"are you sure delete contact (y/n) :";
-    cin>>sure;
-    if(sure == 'y'){
-        Delete_node(&Cfirst,Search);
-        Write_contacts_fille(Cfirst);
-        Write_phones_fille(Cfirst);
-        return Cfirst;
+    system("cls");
+    if(Search){
+        cout<<"\t\t Delete Contact\n";
+        cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
+        cout<<"are you sure delete contact (y/n) :";
+        cin>>sure;
+        if(sure == 'y'){
+            Delete_node(&Cfirst,Search);
+            Write_contacts_fille(Cfirst);
+            Write_phones_fille(Cfirst);
+            return Cfirst;
+        }
+        else 
+            return Cfirst;
     }
-    else 
-        return Cfirst;
+    return Cfirst;
 }
 
 void Write_contacts_fille(Contact_node *first){
@@ -572,7 +586,10 @@ Contact_node *Search_result(Contact_node *Cfirst){
     Contact_node **search;
     bool loop=true;
     string details; 
+    
+    system("cls");
     while (loop){
+        cout<<"\t\t Search\n";
         cout<<"-Enter details for search (0 : back):";
         cin>>details;
         if(details == "0") break;
@@ -600,22 +617,23 @@ Contact_node *Search_result(Contact_node *Cfirst){
     return NULL;
 }
 
-void Edete_contact(Contact_node *Cfirst){
+void edite_contact(Contact_node *Cfirst){
 
     Contact_node *Search = NULL; 
-    string Details_edete;
+    string Details_edite;
     bool loop = true;
     Search=Search_result(Cfirst);
+    system("cls");
     if(!Search) loop =false;
     while (loop){
-        system("cls");
+        cout<<"\t\t Edite\n";
         char menu,sure;
         cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
         cout<<"0 ) back \n";
         cout<<"1 ) first name \n";
         cout<<"2 ) last name \n";
         cout<<"3 ) phone \n";
-        cout<<"chosse menu for edete :";
+        cout<<"chosse menu for edite :";
         cin>>menu;
         switch (menu)
         {
@@ -624,12 +642,12 @@ void Edete_contact(Contact_node *Cfirst){
             break;
         case '1':
             cout<<"-Enter new fist name :";
-            cin>>Details_edete;
-            if(Check_contact_exict(Cfirst,Search->id,Details_edete,Search->lname)){
-                cout<<"\n are you sure "<<Search->fname <<" to "<<Details_edete<<" (y/n):";
+            cin>>Details_edite;
+            if(Check_contact_exict(Cfirst,Search->id,Details_edite,Search->lname)){
+                cout<<"\n are you sure "<<Search->fname <<" to "<<Details_edite<<" (y/n):";
                 cin>>sure;
                 if(sure == 'y'){
-                    Search->fname = Details_edete;
+                    Search->fname = Details_edite;
                     Write_contacts_fille(Cfirst);
                 }
             }
@@ -637,12 +655,12 @@ void Edete_contact(Contact_node *Cfirst){
             break;
         case '2':
             cout<<"-Enter new last name :";
-            cin>>Details_edete;
-            if(Check_contact_exict(Cfirst, Search->id, Search->fname, Details_edete)){
-                cout<<"\n are you sure "<<Search->lname <<" to "<<Details_edete<<" (y/n):";
+            cin>>Details_edite;
+            if(Check_contact_exict(Cfirst, Search->id, Search->fname, Details_edite)){
+                cout<<"\n are you sure "<<Search->lname <<" to "<<Details_edite<<" (y/n):";
                 cin>>sure;
                 if(sure == 'y'){
-                    Search->lname = Details_edete;
+                    Search->lname = Details_edite;
                     Write_contacts_fille(Cfirst);
                 }
             }
@@ -655,7 +673,7 @@ void Edete_contact(Contact_node *Cfirst){
                 
                 cout<<"contact :"<<Search->fname<<"\t"<<Search->lname<<endl;
                 Print_list_phone(Search, count);
-                cout<<"-Enter code phone for edete (0: back) :";
+                cout<<"-Enter code phone for edite (0: back) :";
                 cin>>pmenu;
                 if(pmenu == 0) break;
                 else if(pmenu > count) cout<<"error! :not match code\n";
@@ -665,13 +683,13 @@ void Edete_contact(Contact_node *Cfirst){
                         first = first->next;
                     }
                     cout<<"-Enter new phone :";
-                    cin>>Details_edete;
-                    if(Check_phone(Details_edete)){
-                        if (Check_phone_exict(Cfirst,Search->id,Details_edete)){
-                            cout<<"\n are you sure "<< first->number <<" to "<<Details_edete<<" (y/n):";
+                    cin>>Details_edite;
+                    if(Check_phone(Details_edite)){
+                        if (Check_phone_exict(Cfirst,Search->id,Details_edite)){
+                            cout<<"\n are you sure "<< first->number <<" to "<<Details_edite<<" (y/n):";
                             cin>>sure;
                             if(sure == 'y'){
-                                first ->number = Details_edete;
+                                first ->number = Details_edite;
                                 Write_phones_fille(Cfirst);
                             }
                         }
@@ -708,9 +726,10 @@ Contact_node **Advancedsearch(Contact_node *Cfirst ,string GetText, int &count){
     bool loop=true;
 
     if (isDigit(GetText)){
+        cout<<"isdigit\n";
         while (Ccurrent){
             Pcurrent = Ccurrent ->pnode;
-            while (!Pcurrent){
+            while (Pcurrent){
                 pos = Pcurrent->number.find(GetText);
                 if (pos != std::string::npos){
                     searched[count] = Ccurrent;// ? get address node searched text
@@ -774,16 +793,23 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
     string Fname,Lname,phone,Phonelist[20];
     int count2 =0;
     bool loop = true;
-    
+    system("cls");
+    cout<<"\t\t Add Contact \n";
     while (loop)
     {   
         while (true)
         {
-            cout<<"-Enter First Name :";
+            cout<<"-Enter First Name (0 : back):";
             cin>>Fname;
-            cout<<"-Enter Last Name :";
+            if(Fname == "0") { 
+                return Cfirst;
+            }
+            cout<<"-Enter Last Name (0 : back):";
             cin>>Lname;
-            if(Check_contact_exict(Cfirst, to_string(count+1),Fname,Lname)) break;
+            if(Lname == "0") { 
+                return Cfirst;
+            }
+            else if(Check_contact_exict(Cfirst, to_string(count+1),Fname,Lname)) break;
         }
         count2 =0;
         while (true){
@@ -1033,7 +1059,7 @@ void menu(){
             Print_list_contacts(CFirst);
             break;
         case '3':
-            Edete_contact(CFirst);
+            edite_contact(CFirst);
             break;
         case '4':
             CFirst=Delete_contact(CFirst);
@@ -1051,6 +1077,7 @@ void menu(){
             Contact_node *search;
             int count ;
             search = Search_result(CFirst);
+            if(!search) break;
             cout<<"contact : "<<search->fname<<"\t"<<search->lname<<endl;
             Print_list_phone(CFirst,count);
             break;
@@ -1082,10 +1109,11 @@ Contact_node *Read_contacts_name(Contact_node *first, int &count){
 void Print_list_contacts(Contact_node *Cfirst){
     system("cls");
     int Count=0,Count2=0;
-    cout<<"Number \t First Name \t Last Name \n";
+    cout<<"\n***************************************************\n";
+    cout<<"\t\t List contact\n\n";
     while (Cfirst)
     {
-        cout<<Count2+1<<" )\t"<<Cfirst->fname<<" \t    "<<Cfirst->lname<<endl;
+        cout<<Count2+1<<" )\t"<<Cfirst->fname<<" \t "<<Cfirst->lname<<endl;
         cout<<"Phone Numbers :\n";
         Print_list_phone(Cfirst,Count);
         if(Count == 0 ) cout<<" No phone exict !!\n";
