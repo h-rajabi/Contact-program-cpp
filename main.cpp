@@ -800,12 +800,14 @@ void merge_phone_contact(Contact_node *Cfirst, string Id, string PhoneNumber[], 
 
 void Print_list_phone(Contact_node *Cfirst, int &count){
     Phone_node *Pfirst=Cfirst ->pnode;
-    // cout<<"Id\t First Name\t Last Name\n";
     count =0;
+    int count2=1;
     while (Pfirst){
         cout<<count+1<<") "<<Pfirst->number<<"\t";
+        if(count2 %4 ==0) cout<<endl;
         Pfirst = Pfirst->next;
         count++;
+        count2++;
     }
     cout<<endl;
 }
@@ -973,8 +975,7 @@ void menu(){
         cout<<"-Enter menu code:";
         cin>>menu;
 
-        switch (menu)
-        {
+        switch (menu){
         case '0':
             clear_list(CFirst);
             exit(1);
@@ -1033,14 +1034,17 @@ Contact_node *Read_contacts_name(Contact_node *first, int &count){
 }
 
 void Print_list_contacts(Contact_node *Cfirst){
-    int Count=0;
-    // cout<<"Id\t First Name\t Last Name\n";
+    system("cls");
+    int Count=0,Count2=0;
+    cout<<"Number \t First Name \t Last Name \n";
     while (Cfirst)
     {
-        cout<<Cfirst<<"\t"<<Cfirst ->id<<" )\t"<<Cfirst->fname<<"\t "<<Cfirst->lname<<endl;
-        cout<<"numbers is :";
+        cout<<Count2+1<<" )\t"<<Cfirst->fname<<" \t    "<<Cfirst->lname<<endl;
+        cout<<"Phone Numbers :\n";
         Print_list_phone(Cfirst,Count);
-        cout<<endl;
+        if(Count == 0 ) cout<<" No phone exict !!\n";
+        cout<<"-----------------------------------------------------------------\n";
+        Count2++;
         Cfirst = Cfirst->next;
     }
 }//print linked list contacts
