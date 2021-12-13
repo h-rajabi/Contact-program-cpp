@@ -91,6 +91,7 @@ string To_lower(string getText);
 int main(){
 
     menu();
+    
     return 0;
 }
 
@@ -114,14 +115,15 @@ bool Check_contact_exict(Contact_node *first, string getId, string fname, string
         
         if(getId != Ccurrent->id){
 
-            return true;
-
+            if(To_lower(Ccurrent->fname) == To_lower(fname) && To_lower(Ccurrent->lname) == To_lower(lname) )
+            {
+                cout<<"error! : this contact exict\n";
+                return false;
+            }    
         }
-
         Ccurrent = Ccurrent->next;
     }
-    
-
+    return true;
 }
 
 bool Check_phone_exict(Contact_node *Cfirst, string getId, string getNumber){
