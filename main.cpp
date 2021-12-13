@@ -89,9 +89,13 @@ string To_lower(string getText);
 // ? -----------------------------------------------------------------------------
 
 int main(){
+    Contact_node *CFirst =NULL;
+    int count = 0;
+    CFirst = Read_contacts_name(CFirst,count);
+    Read_phone(CFirst);
+    Check_contact_exict(CFirst,"2","NiMa","pour-karimy");
+    // menu();
 
-    menu();
-    
     return 0;
 }
 
@@ -621,21 +625,26 @@ void Edete_contact(Contact_node *Cfirst){
         case '1':
             cout<<"-Enter new fist name :";
             cin>>Details_edete;
-            cout<<"\n are you sure "<<Search->fname <<" to "<<Details_edete<<" (y/n):";
-            cin>>sure;
-            if(sure == 'y'){
-                Search->fname = Details_edete;
-                Write_contacts_fille(Cfirst);
+            if(Check_contact_exict(Cfirst,Search->id,Details_edete,Search->lname)){
+                cout<<"\n are you sure "<<Search->fname <<" to "<<Details_edete<<" (y/n):";
+                cin>>sure;
+                if(sure == 'y'){
+                    Search->fname = Details_edete;
+                    Write_contacts_fille(Cfirst);
+                }
             }
+            
             break;
         case '2':
             cout<<"-Enter new last name :";
             cin>>Details_edete;
-            cout<<"\n are you sure "<<Search->lname <<" to "<<Details_edete<<" (y/n):";
-            cin>>sure;
-            if(sure == 'y'){
-                Search->lname = Details_edete;
-                Write_contacts_fille(Cfirst);
+            if(Check_contact_exict(Cfirst, Search->id, Search->fname, Details_edete)){
+                cout<<"\n are you sure "<<Search->lname <<" to "<<Details_edete<<" (y/n):";
+                cin>>sure;
+                if(sure == 'y'){
+                    Search->lname = Details_edete;
+                    Write_contacts_fille(Cfirst);
+                }
             }
             break;
         case '3':
@@ -767,11 +776,15 @@ Contact_node *Add_contact(Contact_node *Cfirst, int &count){
     bool loop = true;
     
     while (loop)
-    {
-        cout<<"-Enter First Name :";
-        cin>>Fname;
-        cout<<"-Enter Last Name :";
-        cin>>Lname;
+    {   
+        while (true)
+        {
+            cout<<"-Enter First Name :";
+            cin>>Fname;
+            cout<<"-Enter Last Name :";
+            cin>>Lname;
+            if(Check_contact_exict(Cfirst, to_string(count+1),Fname,Lname)) break;
+        }
         count2 =0;
         while (true){
             
